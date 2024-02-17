@@ -1,4 +1,5 @@
 from flask import Flask, send_file
+from flask_scss import Scss
 import pandas as pd
 import numpy as np  # linear algebra
 import matplotlib.pyplot as plt
@@ -12,12 +13,17 @@ df.dropna(inplace=True)  # remover linhas ou colunas de um DataFrame do pandas q
 
 df = df.drop(['A_id'], axis=1)
 
+# Configurar cores com base no gradiente de vermelho para verde
+z = 0
+colors = plt.cm.RdYlGn(z)  # Gradiente de vermelho para verde
+
 # Gera o gráfico de coluna sobre a qualidade
 plt.figure(figsize=(7, 5))
 sns.countplot(data=df, x='Quality')
 plt.title('Quality')
 plt.savefig('static/images/quality_plot.png')  # Salvar o gráfico como uma imagem PNG
 plt.close()  # Fechar a figura para liberar memória
+
 
 # size vs weight
 plt.figure(figsize=(4, 4), dpi=150)
@@ -74,11 +80,23 @@ plt.savefig('static/images/heatmap.png')
 plt.close()
 
 app = Flask(__name__)
+Scss(app)
 
 
 @app.route('/')
+@app.route('/index.html')
 def index():
     return send_file('index.html')
+
+
+@app.route('/generic.html')
+def generic():
+    return send_file('generic.html')
+
+
+@app.route('/elements.html')
+def elements():
+    return send_file('elements.html')
 
 
 if __name__ == '__main__':

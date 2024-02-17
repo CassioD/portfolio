@@ -73,7 +73,7 @@ input, select, textarea {
 }
 
 /* Basic */
-
+/* Definindo a largura da viewport para dispositivos Microsoft */
 	@-ms-viewport {
 		width: device-width;
 	}
