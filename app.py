@@ -4,6 +4,7 @@ import numpy as np  # linear algebra
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 # Carregar o arquivo CSV
 df = pd.read_csv('./static/kaggle/apple_quality.csv')
 
@@ -57,13 +58,20 @@ plt.close()  # Fechar a figura para liberar memória
 # criar variáveis dummy (variáveis binárias) a partir de uma variável categórica no DataFrame
 # Cria 2 colunas: Bad e Good, e atribui o valor 0 ou 1).
 quality_dummies = pd.get_dummies(df['Quality'], dtype='int')
-quality_dummies
 
 # Concatena as variáveis binárias ao database.
 df = pd.concat([df, quality_dummies], axis=1)
 
-# Correlation between features using heatmap
+# Exclui a coluna Quality
+df = df.drop(['Quality'], axis=1)
+
+# Cria o gráfico de heatmap
+plt.figure(figsize=(10, 8))
 sns.heatmap(df.corr(), annot=True, cmap='Blues')
+# Salva o gráfico como uma imagem PNG na pasta static/images
+plt.savefig('static/images/heatmap.png')
+# Fecha a figura para liberar memória
+plt.close()
 
 app = Flask(__name__)
 
